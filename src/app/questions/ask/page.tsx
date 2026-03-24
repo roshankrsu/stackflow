@@ -1,33 +1,21 @@
-import React from "react";
-import ShimmerButton from "@/components/magicui/shimmer-button";
+import QuestionForm from "@/components/QuestionForm";
 
 const AskQuestionPage = () => {
   return (
-    <div className="container mx-auto px-4 pt-32 pb-20">
-      <h1 className="mb-6 text-3xl font-bold">Ask a Question</h1>
+    <div className="block pb-20 pt-32">
+      <div className="container mx-auto px-4">
+        <h1 className="mb-10 mt-4 text-2xl">
+          Ask a public question
+        </h1>
 
-      <form className="space-y-4 max-w-2xl">
-        <input
-          type="text"
-          placeholder="Title"
-          className="w-full rounded-lg border p-3 text-black"
-        />
+        <div className="flex flex-wrap md:flex-row-reverse ">
+          <div className="w-full md:w-1/3"></div>
 
-        <textarea
-          placeholder="Describe your problem..."
-          className="w-full rounded-lg border p-3 h-40 text-black"
-        />
-
-        <input
-          type="text"
-          placeholder="Tags (comma separated)"
-          className="w-full rounded-lg border p-3 text-black"
-        />
-
-        <ShimmerButton>
-          <span className="text-white">Post Question</span>
-        </ShimmerButton>
-      </form>
+          <div className="w-full md:w-2/3">
+            <QuestionForm /> {/* ✅ NO question prop */}
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
