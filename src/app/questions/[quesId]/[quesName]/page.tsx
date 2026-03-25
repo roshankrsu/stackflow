@@ -60,15 +60,15 @@ const Page = async ({
   // since it is dependent on the question, we fetch it here outside of the Promise.all
   let author;
 
-try {
-  author = await users.get<UserPrefs>(question.authorId);
-} catch {
-  author = {
-    $id: "unknown",
-    name: "Anonymous",
-    prefs: { reputation: 0 },
-  };
-}
+  try {
+    author = await users.get<UserPrefs>(question.authorId);
+  } catch {
+    author = {
+      $id: "unknown",
+      name: "Anonymous",
+      prefs: { reputation: 0 },
+    };
+  }
   [comments.documents, answers.documents] = await Promise.all([
     Promise.all(
       comments.documents.map(async (comment) => {
@@ -189,38 +189,25 @@ try {
               className="rounded-xl p-4"
               source={question.content}
             />
-            <picture>
+            {question.attachmentId && (
               <img
-                src={
-                  question.attachmentId && (
-  <picture>
-    <img
-      src={
-        storage.getFilePreview(
-          questionAttachmentBucket,
-          question.attachmentId
-        ).href
-      }
-      alt={question.title}
-      className="mt-3 rounded-lg"
-    />
-  </picture>
-)}
-                
+                src={`https://sgp.cloud.appwrite.io/v1/storage/buckets/${questionAttachmentBucket}/files/${question.attachmentId}/view?project=69bfb9f100214bf4d0bf`}
                 alt={question.title}
                 className="mt-3 rounded-lg"
               />
-            </picture>
+            )}
             <div className="mt-3 flex flex-wrap items-center gap-3 text-sm">
-              {(Array.isArray(question.tags) ? question.tags : []).map((tag: string) => (
-                <Link
-                  key={tag}
-                  href={`/questions?tag=${tag}`}
-                  className="inline-block rounded-lg bg-white/10 px-2 py-0.5 duration-200 hover:bg-white/20"
-                >
-                  #{tag}
-                </Link>
-              ))}
+              {(Array.isArray(question.tags) ? question.tags : []).map(
+                (tag: string) => (
+                  <Link
+                    key={tag}
+                    href={`/questions?tag=${tag}`}
+                    className="inline-block rounded-lg bg-white/10 px-2 py-0.5 duration-200 hover:bg-white/20"
+                  >
+                    #{tag}
+                  </Link>
+                ),
+              )}
             </div>
             <div className="mt-4 flex items-center justify-end gap-1">
               <picture>
