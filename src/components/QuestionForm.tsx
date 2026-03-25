@@ -108,6 +108,7 @@ const QuestionForm = ({ question }: { question?: Models.Document }) => {
         questionAttachmentBucket,
         ID.unique(),
         formData.attachment!,
+        ['read("any")'], // 🔥 THIS FIXES EVERYTHING
       );
       attachmentId = file.$id;
     }
@@ -155,6 +156,7 @@ const QuestionForm = ({ question }: { question?: Models.Document }) => {
         questionAttachmentBucket,
         ID.unique(),
         formData.attachment,
+        ['read("any")'], 
       );
 
       return file.$id;

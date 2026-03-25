@@ -8,7 +8,6 @@ import {
 } from "@/models/name";
 import { Query } from "node-appwrite";
 import slugify from "@/utils/slugify";
-import { storage } from "@/models/client/config";
 import HeroSectionHeader from "./HeroSectionHeader";
 
 export default async function HeroSection() {
@@ -24,9 +23,8 @@ export default async function HeroSection() {
         title: q.title,
         link: `/questions/${q.$id}/${slugify(q.title)}`,
         thumbnail: q.attachmentId
-          ? storage.getFilePreview(questionAttachmentBucket, q.attachmentId)
-              .href
-          : "https://via.placeholder.com/300",
+          ? `https://sgp.cloud.appwrite.io/v1/storage/buckets/${questionAttachmentBucket}/files/${q.attachmentId}/view?project=69bfb9f100214bf4d0bf`
+          : "/fallback.png",
       }))}
     />
   );
