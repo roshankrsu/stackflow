@@ -11,3 +11,8 @@ export function normalizeTags(tags: any): string[] {
   }
   return [];
 }
+export const getImageUrl = (attachmentId: string | null) => {
+  if (!attachmentId) return "/fallback.png";
+
+  return `https://sgp.cloud.appwrite.io/v1/storage/buckets/question-attachment/files/${attachmentId}/view?project=69bfb9f100214bf4d0bf`;
+};
