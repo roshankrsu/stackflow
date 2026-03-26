@@ -109,6 +109,7 @@ export const ProductCard = ({
   translate,
 }: {
   product: {
+    id: string;
     title: string;
     link: string;
     thumbnail: string;
@@ -128,7 +129,6 @@ export const ProductCard = ({
       whileHover={{
         y: -20,
       }}
-      key={product.id}
       className="group/product relative h-96 w-[30rem] flex-shrink-0"
     >
       <Link
