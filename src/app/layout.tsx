@@ -5,6 +5,7 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import Header from "./components/Header";
 import ToastProvider from "@/components/providers/ToastProvider";
+import Footer from "./components/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,10 +21,18 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="dark">
-      <body className={cn(inter.className, "dark:bg-black dark:text-white")}>
+      <body
+        className={cn(
+          inter.className,
+          "dark:bg-black dark:text-white min-h-screen flex flex-col",
+        )}
+      >
         <Header />
-        {children}
-        <ToastProvider /> 
+        <main className="flex-1">{children}</main>
+
+        <Footer />
+
+        <ToastProvider />
       </body>
     </html>
   );

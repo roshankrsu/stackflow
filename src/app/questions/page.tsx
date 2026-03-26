@@ -68,7 +68,6 @@ const Page = async ({
         ))}
       </div>
       <Pagination total={questions.total} limit={25} />
-      <Footer />
     </div>
   );
 };
