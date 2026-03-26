@@ -1,11 +1,28 @@
 "use client";
 
-import IconCloud from "@/components/magicui/icon-cloud";
 import Particles from "@/components/magicui/particles";
 import ShimmerButton from "@/components/magicui/shimmer-button";
 import { useAuthStore } from "@/store/Auth";
 import Link from "next/link";
 import React from "react";
+import dynamic from "next/dynamic";
+
+const IconCloudClient = dynamic(
+  () => import("@/components/client/IconCloudClient"),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="h-[300px] flex items-center justify-center">
+        Loading animation...
+      </div>
+    ),
+  }
+);
+
+const ParticlesClient = dynamic(
+  () => import("@/components/magicui/particles"),
+  { ssr: false }
+);
 
 const slugs = [
     "typescript",
@@ -45,7 +62,7 @@ const HeroSectionHeader = () => {
 
     return (
         <div className="container mx-auto px-4">
-            <Particles
+            <ParticlesClient
                 className="fixed inset-0 h-full w-full"
                 quantity={500}
                 ease={100}
@@ -94,7 +111,7 @@ const HeroSectionHeader = () => {
                 </div>
                 <div className="flex items-center justify-center">
                     <div className="relative max-w-[32rem] overflow-hidden">
-                        <IconCloud iconSlugs={slugs} />
+                        <IconCloudClient iconSlugs={slugs} />
                     </div>
                 </div>
             </div>

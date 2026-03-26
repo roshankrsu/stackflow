@@ -6,6 +6,7 @@ import {
   questionAttachmentBucket,
   questionCollection,
 } from "@/models/name";
+import { getImageUrl } from "@/lib/utils";
 import { Query } from "node-appwrite";
 import slugify from "@/utils/slugify";
 import HeroSectionHeader from "./HeroSectionHeader";
@@ -20,11 +21,10 @@ export default async function HeroSection() {
     <HeroParallax
       header={<HeroSectionHeader />}
       products={questions.documents.map((q) => ({
+        id: q.$id, 
         title: q.title,
         link: `/questions/${q.$id}/${slugify(q.title)}`,
-        thumbnail: q.attachmentId
-          ? `https://sgp.cloud.appwrite.io/v1/storage/buckets/${questionAttachmentBucket}/files/${q.attachmentId}/view?project=69bfb9f100214bf4d0bf`
-          : "/fallback.png",
+        thumbnail: getImageUrl(q.attachmentId),
       }))}
     />
   );

@@ -24,6 +24,7 @@
     "node-appwrite": "^13.0.0",
     "react": "^18",
     "react-dom": "^18",
+    "react-hot-toast": "^2.6.0",
     "react-icon-cloud": "^4.1.7",
     "tailwind-merge": "^2.6.1",
     "tailwindcss-animate": "^1.0.7",
