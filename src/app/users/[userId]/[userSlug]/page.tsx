@@ -37,7 +37,7 @@ const Page = async ({
           <h2 className="text-xl font-medium">Reputation</h2>
         </div>
         <p className="z-10 whitespace-nowrap text-4xl font-medium text-gray-800 dark:text-gray-200">
-          <NumberTicker value={user.prefs.reputation} />
+          <NumberTicker value={user.prefs?.reputation ?? 0} />
         </p>
         <div className="pointer-events-none absolute inset-0 h-full bg-[radial-gradient(circle_at_50%_120%,rgba(120,119,198,0.3),rgba(255,255,255,0))]" />
       </MagicCard>
@@ -46,7 +46,7 @@ const Page = async ({
           <h2 className="text-xl font-medium">Questions asked</h2>
         </div>
         <p className="z-10 whitespace-nowrap text-4xl font-medium text-gray-800 dark:text-gray-200">
-          <NumberTicker value={questions.total} />
+          <NumberTicker value={questions.total ?? 0} />
         </p>
         <div className="pointer-events-none absolute inset-0 h-full bg-[radial-gradient(circle_at_50%_120%,rgba(120,119,198,0.3),rgba(255,255,255,0))]" />
       </MagicCard>
@@ -55,7 +55,7 @@ const Page = async ({
           <h2 className="text-xl font-medium">Answers given</h2>
         </div>
         <p className="z-10 whitespace-nowrap text-4xl font-medium text-gray-800 dark:text-gray-200">
-          <NumberTicker value={answers.total} />
+          <NumberTicker value={answers.total ?? 0} />
         </p>
         <div className="pointer-events-none absolute inset-0 h-full bg-[radial-gradient(circle_at_50%_120%,rgba(120,119,198,0.3),rgba(255,255,255,0))]" />
       </MagicCard>

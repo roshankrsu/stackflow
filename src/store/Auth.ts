@@ -7,7 +7,8 @@ import { account } from "@/models/client/config";
 
 
 export interface UserPrefs {
-  reputation: number
+  reputation?: number;
+  bio?: string;
 }
 
 interface IAuthStore {

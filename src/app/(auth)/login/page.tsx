@@ -117,7 +117,7 @@ export default function Login() {
         <div className="my-8 h-[1px] w-full bg-gradient-to-r from-transparent via-neutral-300 to-transparent dark:via-neutral-700" />
 
         <div className="flex flex-col space-y-4">
-          <button
+          {/* <button
             className="group/btn relative flex h-10 w-full items-center justify-start space-x-2 rounded-md bg-gray-50 px-4 font-medium text-black shadow-input dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_var(--neutral-800)]"
             type="button"
             disabled={isLoading}
@@ -127,8 +127,8 @@ export default function Login() {
               Google
             </span>
             <BottomGradient />
-          </button>
-          <button
+          </button> */}
+          {/* <button
             className="group/btn relative flex h-10 w-full items-center justify-start space-x-2 rounded-md bg-gray-50 px-4 font-medium text-black shadow-input dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_var(--neutral-800)]"
             type="button"
             disabled={isLoading}
@@ -138,7 +138,7 @@ export default function Login() {
               GitHub
             </span>
             <BottomGradient />
-          </button>
+          </button> */}
         </div>
       </form>
     </div>
