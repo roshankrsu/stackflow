@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-
+import { unstable_noStore } from "next/cache";
 import { AnimatedList } from "@/components/magicui/animated-list";
 import { users } from "@/models/server/config";
 import { Models, Query } from "node-appwrite";
@@ -48,6 +48,7 @@ const Notification = ({ user }: { user: Models.User<UserPrefs> }) => {
 };
 
 export default async function TopContributers() {
+    unstable_noStore(); //disables caching
     const topUsers = await users.list<UserPrefs>([Query.limit(10)]);
 
     return (

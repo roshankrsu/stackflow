@@ -1,3 +1,4 @@
+import { unstable_noStore } from "next/cache";
 import QuestionCard from "@/components/QuestionCard";
 import {
   answerCollection,
@@ -13,6 +14,7 @@ import { enrichQuestions } from "@/lib/questions";
 import { normalizeTags } from "@/lib/utils";
 
 const LatestQuestions = async () => {
+  unstable_noStore(); // disables caching
   const questions = await databases.listDocuments(db, questionCollection, [
     Query.limit(5),
     Query.orderDesc("$createdAt"),
