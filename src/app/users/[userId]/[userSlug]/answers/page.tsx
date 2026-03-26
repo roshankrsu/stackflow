@@ -29,16 +29,25 @@ const Page = async ({
 
   const answers = await databases.listDocuments(db, answerCollection, queries);
 
-  answers.documents = await Promise.all(
+  const enrichedAnswers = await Promise.all(
     answers.documents.map(async (ans) => {
-      const question = await databases.getDocument(
-        db,
-        questionCollection,
-        ans.questionId,
-        [Query.select(["title"])],
-      );
-      return { ...ans, question };
+      try {
+        const question = await databases.getDocument(
+          db,
+          questionCollection,
+          ans.questionId,
+          [Query.select(["title"])],
+        );
+
+        return { ...ans, question };
+      } catch (error) {
+        return null;
+      }
     }),
+  );
+
+  answers.documents = enrichedAnswers.filter(
+    (ans): ans is NonNullable<typeof ans> => ans !== null,
   );
 
   return (
