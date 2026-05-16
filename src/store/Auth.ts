@@ -34,6 +34,7 @@ interface IAuthStore {
     error?: AppwriteException | null;
   }>;
   loginWithGoogle(): Promise<void>;
+  loginWithGithub(): Promise<void>;
   logout(): Promise<void>;
 }
 
@@ -123,6 +124,17 @@ export const useAuthStore = create<IAuthStore>()(
         try {
           await account.createOAuth2Session(
             OAuthProvider.Google,
+            `${process.env.NEXT_PUBLIC_APP_URL}/`,
+            `${process.env.NEXT_PUBLIC_APP_URL}/login`,
+          );
+        } catch (error) {
+          console.error(error);
+        }
+      },
+      async loginWithGithub() {
+        try {
+          await account.createOAuth2Session(
+            OAuthProvider.Github,
             `${process.env.NEXT_PUBLIC_APP_URL}/`,
             `${process.env.NEXT_PUBLIC_APP_URL}/login`,
           );
