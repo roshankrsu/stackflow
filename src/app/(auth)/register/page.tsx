@@ -47,7 +47,7 @@ export default function Register() {
     const password = formData.get("password");
 
     //  validation
-    if (!firstname || !lastname || !email || !password) {
+    if (!firstname || !email || !password) {
       toast.error("Please fill out all fields");
       return;
     }
@@ -59,7 +59,7 @@ export default function Register() {
     try {
       // create account
       const response = await createAccount(
-        `${firstname} ${lastname}`,
+        `${firstname} ${lastname || ""}`.trim(),
         email.toString(),
         password.toString(),
       );
@@ -114,12 +114,12 @@ export default function Register() {
             />
           </LabelInputContainer>
           <LabelInputContainer>
-            <Label htmlFor="lastname">Last name</Label>
+            <Label htmlFor="lastname">Last name (optional)</Label>
             <Input
               className="text-black"
               id="lastname"
               name="lastname"
-              placeholder="surname"
+              placeholder="surname (optional)"
               type="text"
             />
           </LabelInputContainer>
