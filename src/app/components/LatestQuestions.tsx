@@ -20,8 +20,6 @@ const LatestQuestions = async () => {
     Query.orderDesc("$createdAt"),
   ]);
 
-  console.log("Fetched Questions:", questions);
-
   questions.documents = await enrichQuestions(questions.documents);
 
   questions.documents = questions.documents.map((q) => ({

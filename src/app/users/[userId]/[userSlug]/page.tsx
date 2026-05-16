@@ -12,9 +12,6 @@ const Page = async ({
   params: Promise<{ userId: string; userSlug: string }>;
 }) => {
   const { userId } = await params;
-
-  console.log("DB:", db);
-  console.log("Collection:", questionCollection);
   const [user, questions, answers] = await Promise.all([
     users.get<UserPrefs>(userId),
     databases.listDocuments(db, questionCollection, [

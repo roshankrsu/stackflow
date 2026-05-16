@@ -35,7 +35,6 @@ const Page = async ({
     questionCollection,
     queries,
   );
-  console.log("Questions", questions);
 
   questions.documents = await enrichQuestions(questions.documents);
 

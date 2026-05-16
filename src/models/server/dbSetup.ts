@@ -6,28 +6,23 @@ import createVoteCollection from "./vote.collection";
 
 import { databases } from "./config";
 
-export default async function getOrCreateDB(){
+export default async function getOrCreateDB() {
   try {
-    await databases.get(db)
-    console.log("Database connection")
+    await databases.get(db);
   } catch (error) {
     try {
-      await databases.create(db, db)
-      console.log("database created")
+      await databases.create(db, db);
       //create collections
       await Promise.all([
         createQuestionCollection(),
         createAnswerCollection(),
         createCommentCollection(),
         createVoteCollection(),
-
-      ])
-      console.log("Collection created")
-      console.log("Database connected")
+      ]);
     } catch (error) {
-      console.log("Error creating databases or collection", error)
+      console.error("Error creating databases or collection", error);
     }
   }
 
-  return databases
+  return databases;
 }
