@@ -13,7 +13,6 @@ export default async function createQuestionCollection(){
     Permission.update("users"),
     Permission.delete("users"),
   ])
-  console.log("Question collection is created")
 
   //creating attributes and Indexes
 
@@ -24,7 +23,7 @@ export default async function createQuestionCollection(){
     databases.createStringAttribute(db, questionCollection, "tags", 50, true, undefined, true),
     databases.createStringAttribute(db, questionCollection, "attachmentId", 50, false),
   ]);
-  console.log("Question Attributes created")
+
 
   // create Indexes
 

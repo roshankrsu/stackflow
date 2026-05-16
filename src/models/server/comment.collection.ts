@@ -11,7 +11,6 @@ export default async function createCommentCollection() {
         Permission.update("users"),
         Permission.delete("users"),
     ]);
-    console.log("Comment Collection Created");
 
     // Creating Attributes
     await Promise.all([
@@ -20,5 +19,5 @@ export default async function createCommentCollection() {
         databases.createStringAttribute(db, commentCollection, "typeId", 50, true),
         databases.createStringAttribute(db, commentCollection, "authorId", 50, true),
     ]);
-    console.log("Comment Attributes Created");
+
 }

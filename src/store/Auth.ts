@@ -58,7 +58,7 @@ export const useAuthStore = create<IAuthStore>()(
             account.createJWT(),
           ]);
 
-          if (!user.prefs?.reputation) {
+          if (user.prefs?.reputation === undefined) {
             await account.updatePrefs<UserPrefs>({
               reputation: 0,
             });
@@ -70,7 +70,7 @@ export const useAuthStore = create<IAuthStore>()(
             jwt,
           });
         } catch (error) {
-          console.log(error);
+          console.error(error);
 
           set({
             session: null,
@@ -90,7 +90,7 @@ export const useAuthStore = create<IAuthStore>()(
             account.get<UserPrefs>(),
             account.createJWT(),
           ]);
-          if (!user.prefs?.reputation)
+          if (user.prefs?.reputation === undefined)
             await account.updatePrefs<UserPrefs>({
               reputation: 0,
             });
@@ -99,7 +99,7 @@ export const useAuthStore = create<IAuthStore>()(
 
           return { success: true };
         } catch (error) {
-          console.log(error);
+          console.error(error);
           return {
             success: false,
             error: error instanceof AppwriteException ? error : null,
@@ -112,7 +112,7 @@ export const useAuthStore = create<IAuthStore>()(
           await account.create(ID.unique(), email, password, name);
           return { success: true };
         } catch (error) {
-          console.log(error);
+          console.error(error);
           return {
             success: false,
             error: error instanceof AppwriteException ? error : null,
@@ -127,7 +127,7 @@ export const useAuthStore = create<IAuthStore>()(
             `${process.env.NEXT_PUBLIC_APP_URL}/login`,
           );
         } catch (error) {
-          console.log(error);
+          console.error(error);
         }
       },
 
@@ -136,7 +136,7 @@ export const useAuthStore = create<IAuthStore>()(
           await account.deleteSessions();
           set({ session: null, jwt: null, user: null });
         } catch (error) {
-          console.log(error);
+          console.error(error);
         }
       },
     })),

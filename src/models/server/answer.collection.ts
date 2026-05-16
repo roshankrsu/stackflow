@@ -1,4 +1,4 @@
-import { IndexType, Permission } from "node-appwrite";
+import {Permission } from "node-appwrite";
 import { answerCollection, db } from "../name";
 import { databases } from "./config";
 
@@ -11,7 +11,6 @@ export default async function createAnswerCollection() {
         Permission.update("users"),
         Permission.delete("users"),
     ]);
-    console.log("Answer Collection Created");
 
     // Creating Attributes
     await Promise.all([
@@ -19,5 +18,4 @@ export default async function createAnswerCollection() {
         databases.createStringAttribute(db, answerCollection, "questionId", 50, true),
         databases.createStringAttribute(db, answerCollection, "authorId", 50, true),
     ]);
-    console.log("Answer Attributes Created");
 }
