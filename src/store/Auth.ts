@@ -2,9 +2,8 @@ import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 import { persist } from "zustand/middleware";
 
-import {AppwriteException, ID, Models} from "appwrite"
+import { AppwriteException, ID, Models, OAuthProvider } from "appwrite";
 import { account } from "@/models/client/config";
-
 
 export interface UserPrefs {
   reputation?: number;
@@ -13,32 +12,30 @@ export interface UserPrefs {
 
 interface IAuthStore {
   session: Models.Session | null;
-  jwt: string | null
-  user: Models.User<UserPrefs> | null
-  hydrated: boolean
+  jwt: string | null;
+  user: Models.User<UserPrefs> | null;
+  hydrated: boolean;
 
   setHydrated(): void;
   verfiySession(): Promise<void>;
   login(
     email: string,
-    password: string
-  ): Promise<
-  {
+    password: string,
+  ): Promise<{
     success: boolean;
-    error?: AppwriteException| null
-  }>
+    error?: AppwriteException | null;
+  }>;
   createAccount(
     name: string,
     email: string,
-    password: string
-  ): Promise<
-  {
+    password: string,
+  ): Promise<{
     success: boolean;
-    error?: AppwriteException| null
-  }>
-  logout(): Promise<void>
+    error?: AppwriteException | null;
+  }>;
+  loginWithGoogle(): Promise<void>;
+  logout(): Promise<void>;
 }
-
 
 export const useAuthStore = create<IAuthStore>()(
   persist(
@@ -49,77 +46,85 @@ export const useAuthStore = create<IAuthStore>()(
       hydrated: false,
 
       setHydrated() {
-        set({hydrated: true})
+        set({ hydrated: true });
       },
 
       async verfiySession() {
         try {
-          const session = await account.getSession("current")
-          set({session})
-
+          const session = await account.getSession("current");
+          set({ session });
         } catch (error) {
-          console.log(error)
+          console.log(error);
         }
       },
 
       async login(email: string, password: string) {
         try {
-          const session = await account.createEmailPasswordSession(email, password)
-          const [user, {jwt}] = await Promise.all([
+          const session = await account.createEmailPasswordSession(
+            email,
+            password,
+          );
+          const [user, { jwt }] = await Promise.all([
             account.get<UserPrefs>(),
-            account.createJWT()
+            account.createJWT(),
+          ]);
+          if (!user.prefs?.reputation)
+            await account.updatePrefs<UserPrefs>({
+              reputation: 0,
+            });
 
-          ])
-          if (!user.prefs?.reputation) await account.updatePrefs<UserPrefs>({
-            reputation: 0
-          })
+          set({ session, user, jwt });
 
-          set({session, user, jwt})
-          
-          return { success: true}
-
+          return { success: true };
         } catch (error) {
-
-          console.log(error)
+          console.log(error);
           return {
             success: false,
-            error: error instanceof AppwriteException ? error: null,
-            
-          }
+            error: error instanceof AppwriteException ? error : null,
+          };
         }
       },
 
-      async createAccount(name:string, email: string, password: string) {
+      async createAccount(name: string, email: string, password: string) {
         try {
-          await account.create(ID.unique(), email, password, name)
-          return {success: true}
+          await account.create(ID.unique(), email, password, name);
+          return { success: true };
         } catch (error) {
-          console.log(error)
+          console.log(error);
           return {
             success: false,
-            error: error instanceof AppwriteException ? error: null,
-            
-          }
+            error: error instanceof AppwriteException ? error : null,
+          };
+        }
+      },
+      async loginWithGoogle() {
+        try {
+          await account.createOAuth2Session(
+            OAuthProvider.Google,
+            process.env.NEXT_PUBLIC_APP_URL,
+            `${process.env.NEXT_PUBLIC_APP_URL}/login`,
+          );
+        } catch (error) {
+          console.log(error);
         }
       },
 
       async logout() {
         try {
-          await account.deleteSessions()
-          set({session: null, jwt: null, user: null})
-          
+          await account.deleteSessions();
+          set({ session: null, jwt: null, user: null });
         } catch (error) {
-          console.log(error)
+          console.log(error);
         }
       },
     })),
     {
       name: "auth",
-      onRehydrateStorage(){
+      onRehydrateStorage() {
         return (state, error) => {
-          if (!error) state?.setHydrated()
-        }
-      }
-    }
-  )
-)
+          if (!error) state?.setHydrated();
+        };
+      },
+    },
+  ),
+);
