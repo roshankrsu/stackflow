@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import Header from "./components/Header";
 import ToastProvider from "@/components/providers/ToastProvider";
 import Footer from "./components/Footer";
+import AuthProvider from "@/components/providers/AuthProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -27,12 +28,12 @@ export default function RootLayout({
           "dark:bg-black dark:text-white min-h-screen flex flex-col",
         )}
       >
-        <Header />
-        <main className="flex-1">{children}</main>
-
-        <Footer />
-
-        <ToastProvider />
+        <AuthProvider>
+          <Header />
+          <main className="flex-1">{children}</main>
+          <Footer />
+          <ToastProvider />
+        </AuthProvider>
       </body>
     </html>
   );

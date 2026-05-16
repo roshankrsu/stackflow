@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import React from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -33,10 +34,9 @@ const LabelInputContainer = ({
 };
 
 export default function Login() {
-  const { login } = useAuthStore();
+  const router = useRouter();
+  const { login, loginWithGoogle } = useAuthStore();
   const [isLoading, setIsLoading] = React.useState(false);
-  const [error, setError] = React.useState("");
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -62,6 +62,7 @@ export default function Login() {
       }
 
       toast.success("Login successful 🎉", { id: toastId });
+      router.push("/");
     } catch (error: any) {
       toast.error(error?.message || "Login failed ❌", { id: toastId });
     } finally {
@@ -117,9 +118,10 @@ export default function Login() {
         <div className="my-8 h-[1px] w-full bg-gradient-to-r from-transparent via-neutral-300 to-transparent dark:via-neutral-700" />
 
         <div className="flex flex-col space-y-4">
-          {/* <button
+          <button
             className="group/btn relative flex h-10 w-full items-center justify-start space-x-2 rounded-md bg-gray-50 px-4 font-medium text-black shadow-input dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_var(--neutral-800)]"
             type="button"
+            onClick={loginWithGoogle}
             disabled={isLoading}
           >
             <IconBrandGoogle className="h-4 w-4 text-neutral-800 dark:text-neutral-300" />
@@ -127,7 +129,7 @@ export default function Login() {
               Google
             </span>
             <BottomGradient />
-          </button> */}
+          </button>
           {/* <button
             className="group/btn relative flex h-10 w-full items-center justify-start space-x-2 rounded-md bg-gray-50 px-4 font-medium text-black shadow-input dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_var(--neutral-800)]"
             type="button"

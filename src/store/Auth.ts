@@ -17,7 +17,7 @@ interface IAuthStore {
   hydrated: boolean;
 
   setHydrated(): void;
-  verfiySession(): Promise<void>;
+  verifySession(): Promise<void>;
   login(
     email: string,
     password: string,
@@ -49,12 +49,34 @@ export const useAuthStore = create<IAuthStore>()(
         set({ hydrated: true });
       },
 
-      async verfiySession() {
+      async verifySession() {
         try {
           const session = await account.getSession("current");
-          set({ session });
+
+          const [user, { jwt }] = await Promise.all([
+            account.get<UserPrefs>(),
+            account.createJWT(),
+          ]);
+
+          if (!user.prefs?.reputation) {
+            await account.updatePrefs<UserPrefs>({
+              reputation: 0,
+            });
+          }
+
+          set({
+            session,
+            user,
+            jwt,
+          });
         } catch (error) {
           console.log(error);
+
+          set({
+            session: null,
+            user: null,
+            jwt: null,
+          });
         }
       },
 
@@ -101,7 +123,7 @@ export const useAuthStore = create<IAuthStore>()(
         try {
           await account.createOAuth2Session(
             OAuthProvider.Google,
-            process.env.NEXT_PUBLIC_APP_URL,
+            `${process.env.NEXT_PUBLIC_APP_URL}/`,
             `${process.env.NEXT_PUBLIC_APP_URL}/login`,
           );
         } catch (error) {
