@@ -70,9 +70,7 @@ export const useAuthStore = create<IAuthStore>()(
             user,
             jwt,
           });
-        } catch (error) {
-          console.error(error);
-
+        } catch {
           set({
             session: null,
             user: null,
@@ -131,9 +129,13 @@ export const useAuthStore = create<IAuthStore>()(
         try {
           await account.create(ID.unique(), email, password, name);
 
+          await account.createEmailPasswordSession(email, password);
+
           await account.createVerification(
             `${process.env.NEXT_PUBLIC_APP_URL}/verify-email`,
           );
+
+          await account.deleteSession("current");
 
           return { success: true };
         } catch (error) {
