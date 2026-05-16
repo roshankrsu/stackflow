@@ -8,6 +8,7 @@ import { IconBrandGithub, IconBrandGoogle } from "@tabler/icons-react";
 import { useAuthStore } from "@/store/Auth";
 import Link from "next/link";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 const BottomGradient = () => {
   return (
@@ -33,14 +34,13 @@ const LabelInputContainer = ({
 };
 
 export default function Register() {
-  const { login, createAccount, loginWithGoogle, loginWithGithub } =
+  const router = useRouter();
+  const { createAccount, loginWithGoogle, loginWithGithub } =
     useAuthStore();
   const [isLoading, setIsLoading] = React.useState(false);
-  const [error, setError] = React.useState("");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     const formData = new FormData(e.currentTarget);
     const firstname = formData.get("firstname");
     const lastname = formData.get("lastname");
@@ -58,7 +58,6 @@ export default function Register() {
     const toastId = toast.loading("Creating account...");
 
     try {
-      // create account
       const response = await createAccount(
         `${firstname} ${lastname || ""}`.trim(),
         email.toString(),
@@ -69,18 +68,11 @@ export default function Register() {
         throw new Error(response.error.message);
       }
 
-      // auto login
-      const loginResponse = await login(email.toString(), password.toString());
+      toast.success("Verification email sent! Please check your inbox 📩", {
+        id: toastId,
+      });
 
-      if (loginResponse.error) {
-        throw new Error(loginResponse.error.message);
-      }
-
-      // success
-      toast.success("Account Created 🎉", { id: toastId });
-
-      // optional redirect
-      // router.push("/");
+      router.push("/login");
     } catch (error: any) {
       toast.error(error?.message || "Signup Failed ❌", { id: toastId });
     } finally {
